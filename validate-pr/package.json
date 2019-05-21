@@ -4,7 +4,7 @@
     "description": "",
     "main": "danger_pr.js",
     "scripts": {
-        "validate-pr": "danger local"
+        "validate-pr": "danger ci"
     },
     "keywords": [],
     "author": "",
