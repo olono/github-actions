@@ -5,5 +5,5 @@ workflow "PR Validation" {
 
 action "Validate PR" {
   uses = "./validate-pr"
-  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
+  secrets = ["GITHUB_TOKEN"]
 }
