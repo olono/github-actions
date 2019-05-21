@@ -1,6 +1,6 @@
 #!/bin/bash
 set -eEx
 
-cd validate-pr
+cd _github-actions/validate-pr
 npm install
 npm run validate-pr
