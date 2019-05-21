@@ -1,0 +1,17 @@
+{
+    "name": "validate_pr",
+    "version": "1.0.0",
+    "description": "",
+    "main": "danger_pr.js",
+    "scripts": {
+        "validate-pr": "danger ci"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "danger": "^7.1.4",
+        "danger-plugin-jira-issue": "^1.4.1",
+        "lodash": "^4.17.11"
+    }
+}
