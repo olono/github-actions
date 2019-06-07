@@ -15,5 +15,5 @@ workflow "Notify Slack" {
 
 action "Notify PR" {
   uses = "./notify-pr"
-  secrets = ["GITHUB_TOKEN"]
+  secrets = ["SLACK_TOKEN"]
 }

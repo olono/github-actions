@@ -10,8 +10,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@slack/web-api": "^5.0.1",
         "danger": "^7.1.4",
-        "danger-plugin-slack": "^1.1.2",
         "lodash": "^4.17.11"
     }
 }
