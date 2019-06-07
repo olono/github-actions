@@ -21,7 +21,7 @@ const web = new WebClient(token);
                     `[${_.get(event, 'pull_request.title')}](${_.get(event, 'pull_request.url')})`
                 ),
                 pretext: slackifyMarkdown(
-                    `New comment by:[${_.get(event, 'sender.login')}](${_.get(event, 'sender.html_url')})`
+                    `New comment by: [${_.get(event, 'sender.login')}](${_.get(event, 'sender.html_url')})`
                 ),
                 text: slackifyMarkdown(`${_.get(event, 'comment.body') || _.get(event, 'review.body')}`),
                 mrkdwn_in: ['title', 'text', 'pretext']
