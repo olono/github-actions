@@ -12,6 +12,7 @@
     "dependencies": {
         "@slack/web-api": "^5.0.1",
         "danger": "^7.1.4",
-        "lodash": "^4.17.11"
+        "lodash": "^4.17.11",
+        "slackify-markdown": "^1.1.1"
     }
 }

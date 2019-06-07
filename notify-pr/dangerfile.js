@@ -1,6 +1,7 @@
 'use strict';
 
 const { WebClient } = require('@slack/web-api');
+const slackifyMarkdown = require('slackify-markdown');
 const _ = require('lodash');
 const event = require(process.env.GITHUB_EVENT_PATH);
 
@@ -18,14 +19,16 @@ const web = new WebClient(token);
             {
                 title: 'test title',
                 pretext: 'new something',
-                text: `ay ${JSON.stringify({
-                    path: process.env.GITHUB_EVENT_PATH,
-                    event: event.action,
-                    comment: _.get(event, 'comment.body'),
-                    reviewComment: _.get(event, 'review.body'),
-                    sender: _.get(event, 'sender.login'),
-                    prAuthor: _.get(event, 'pull_request.user.login')
-                })} [${_.get(event, 'pull_request.title')}](${_.get(event, 'pull_request.url')})`,
+                text: slackifyMarkdown(
+                    `ay ${JSON.stringify({
+                        path: process.env.GITHUB_EVENT_PATH,
+                        event: event.action,
+                        comment: _.get(event, 'comment.body'),
+                        reviewComment: _.get(event, 'review.body'),
+                        sender: _.get(event, 'sender.login'),
+                        prAuthor: _.get(event, 'pull_request.user.login')
+                    })} [${_.get(event, 'pull_request.title')}](${_.get(event, 'pull_request.url')})`
+                ),
                 mrkdwn_in: ['title', 'text', 'pretext']
             }
         ]
