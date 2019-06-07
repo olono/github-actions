@@ -10,7 +10,7 @@ action "Validate PR" {
 
 workflow "Notify Slack" {
   on = "pull_request"
-  resolves = ["Validate PR"]
+  resolves = ["Notify PR"]
 }
 
 action "Notify PR" {
