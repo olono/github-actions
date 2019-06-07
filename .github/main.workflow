@@ -9,7 +9,7 @@ action "Validate PR" {
 }
 
 workflow "Notify Slack" {
-  on = "issue_comment"
+  on = "commit_comment"
   resolves = ["Notify PR"]
 }
 
