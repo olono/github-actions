@@ -23,7 +23,7 @@ const web = new WebClient(token);
                 pretext: slackifyMarkdown(
                     `New comment by:[${_.get(event, 'sender.login')}](${_.get(event, 'sender.html_url')})`
                 ),
-                text: slackifyMarkdown(`${_.get(event, 'comment.body', _.get(event, 'review.body'))}`),
+                text: slackifyMarkdown(`${_.get(event, 'comment.body') || _.get(event, 'review.body')}`),
                 mrkdwn_in: ['title', 'text', 'pretext']
             }
         ]
