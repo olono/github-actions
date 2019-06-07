@@ -16,9 +16,6 @@ if (pr) {
     (async () => {
         // See: https://api.slack.com/methods/chat.postMessage
         // change channel to userid?
-        const res = await web.chat.postMessage({ channel: '#pr-mentions', text: 'Hello there' });
-
-        // `res` contains information about the posted message
-        console.log('Message sent: ', res.ts);
+        const res = await web.chat.postMessage({ channel: '#pr-mentions', text: `ay ${JSON.stringify(process.env.GITHUB_EVENT_PATH)}` });
     })();
 }
