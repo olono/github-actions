@@ -11,7 +11,7 @@ const pr = _.get(danger, 'github.pr');
 if (pr) {
     const options = {
         webhookUrl: 'https://hooks.slack.com/services/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', // TODO CHANGE TO ENV
-        text: 'Hello world!', // A custom message to send instead of the report (optional, default: null)
+        text: 'Hello wrld!', // A custom message to send instead of the report (optional, default: null)
         username: 'pr-boi',
         iconEmoji: ':sunglasses:'
     };
