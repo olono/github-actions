@@ -18,8 +18,8 @@ workflow "Notify Slack Review Comment" {
   resolves = ["Notify PR"]
 }
 
-workflow "Notify Slack Issue Comment" {
-  on = "issue_comment"
+workflow "Notify Slack Commit Comment" {
+  on = "commit_comment"
   resolves = ["Notify PR"]
 }
 
