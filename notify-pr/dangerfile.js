@@ -17,18 +17,13 @@ const web = new WebClient(token);
         channel: '#pr-mentions',
         attachments: [
             {
-                title: 'test title',
-                pretext: 'new something',
-                text: slackifyMarkdown(
-                    `ay ${JSON.stringify({
-                        path: process.env.GITHUB_EVENT_PATH,
-                        event: event.action,
-                        comment: _.get(event, 'comment.body'),
-                        reviewComment: _.get(event, 'review.body'),
-                        sender: _.get(event, 'sender.login'),
-                        prAuthor: _.get(event, 'pull_request.user.login')
-                    })} [${_.get(event, 'pull_request.title')}](${_.get(event, 'pull_request.url')})`
+                title: slackifyMarkdown(
+                    `[${_.get(event, 'pull_request.title')}](${_.get(event, 'pull_request.url')})`
                 ),
+                pretext: slackifyMarkdown(
+                    `New comment by:[${_.get(event, 'sender.login')}](${_.get(event, 'sender.html_url')})`
+                ),
+                text: slackifyMarkdown(`${_.get(event, 'comment.body', _.get(event, 'review.body'))}`),
                 mrkdwn_in: ['title', 'text', 'pretext']
             }
         ]
