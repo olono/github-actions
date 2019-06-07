@@ -8,8 +8,13 @@ action "Validate PR" {
   secrets = ["GITHUB_TOKEN"]
 }
 
-workflow "Notify Slack" {
+workflow "Notify Slack Review" {
   on = "pull_request_review"
+  resolves = ["Notify PR"]
+}
+
+workflow "Notify Slack Review Comment" {
+  on = "pull_request_review_comment"
   resolves = ["Notify PR"]
 }
 
