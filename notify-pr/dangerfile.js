@@ -14,13 +14,20 @@ const web = new WebClient(token);
     // change channel to userid?
     const res = await web.chat.postMessage({
         channel: '#pr-mentions',
-        text: `ay ${JSON.stringify({
-            path: process.env.GITHUB_EVENT_PATH,
-            event: event.action,
-            comment: _.get(event, 'comment.body'),
-            reviewComment: _.get(event, 'review.body'),
-            sender: _.get(event, 'sender.login'),
-            prAuthor: _.get(event, 'pull_request.user.login')
-        })}`
+        attachments: [
+            {
+                title: 'test title',
+                pretext: 'new something',
+                text: `ay ${JSON.stringify({
+                    path: process.env.GITHUB_EVENT_PATH,
+                    event: event.action,
+                    comment: _.get(event, 'comment.body'),
+                    reviewComment: _.get(event, 'review.body'),
+                    sender: _.get(event, 'sender.login'),
+                    prAuthor: _.get(event, 'pull_request.user.login')
+                })} [${_.get(event, 'pull_request.title')}](${_.get(event, 'pull_request.url')})`,
+                mrkdwn_in: ['title', 'text', 'pretext']
+            }
+        ]
     });
 })();
