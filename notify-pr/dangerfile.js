@@ -19,7 +19,8 @@ const web = new WebClient(token);
             event: event.action,
             comment: _.get(event, 'comment.body'),
             reviewComment: _.get(event, 'review.body'),
-            sender: _.get(event, 'sender.login')
+            sender: _.get(event, 'sender.login'),
+            prAuthor: _.get(event, 'pull_request.user.login')
         })}`
     });
 })();
