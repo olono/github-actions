@@ -18,11 +18,6 @@ workflow "Notify Slack Review Comment" {
   resolves = ["Notify PR"]
 }
 
-workflow "Notify Slack Commit Comment" {
-  on = "commit_comment"
-  resolves = ["Notify PR"]
-}
-
 action "Notify PR" {
   uses = "./notify-pr"
   secrets = ["GITHUB_TOKEN", "SLACK_TOKEN"]

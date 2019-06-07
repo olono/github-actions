@@ -18,7 +18,8 @@ const web = new WebClient(token);
             path: process.env.GITHUB_EVENT_PATH,
             event: event.action,
             comment: _.get(event, 'comment.body'),
-            reviewComment: _.get(event, 'review.body')
+            reviewComment: _.get(event, 'review.body'),
+            sender: _.get(event, 'sender.login')
         })}`
     });
 })();
