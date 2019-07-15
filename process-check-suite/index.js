@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const request = require('request');
 
-const SLACK_IDS = require('../shared/slack-ids');
+const SLACK_IDS = require('./slack-ids');
 const SLACK_TOKEN = 'xoxb-4932552867-693539576197-buemNUZ9Y22NyF8HmZ5HodbF';
 
 const ALLOWED_CONTEXTS = {
