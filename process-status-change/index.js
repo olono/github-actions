@@ -1,48 +1,57 @@
+// Import 3rd-party libraries.
 const _ = require('lodash');
 const request = require('request');
 
+// Import constants.
 const SLACK_IDS = require('./slack-ids');
+
+// Get the SLACK_TOKEN secret from the environment.
 const SLACK_TOKEN = _.get(process.env, 'SLACK_TOKEN');
 
+// Determine which status events to actually process.
 const ALLOWED_CONTEXTS = {
     semaphoreci: 'Semaphore'
 };
 
+// Get the event data and context.
 const eventPath = process.env.GITHUB_EVENT_PATH;
 const eventJson = require(eventPath);
 const context = _.get(eventJson, 'context');
 
+// Bail if this is not a context we care about.
 if (!ALLOWED_CONTEXTS[context]) {
     process.exit(78);
 }
 
+// Get the new PR status.
 const state = _.get(eventJson, 'state');
+
+// Bail with a neutral exit code if it's "pending", meaning a test is running.
 if (state === 'pending') {
     process.exit(78);
 }
 
-if (state === 'success') {
-    console.log('SUCCESS!');
-}
-
-if (state === 'failure') {
-    console.log('FAIL!');
-}
-
-if (state === 'error') {
-    console.log('ERROR!');
-}
-
+// Get more info about the event.
 const githubUser = _.get(eventJson, 'commit.committer.login');
-const slackInfo = _.get(SLACK_IDS, githubUser);
 const branchName = _.get(eventJson, 'branches.0.name');
-const repoName = process.env.GITHUB_REPOSITORY.replace(/^olono\//, '');
 const targetUrl = _.get(eventJson, 'target_url');
+const repoName = process.env.GITHUB_REPOSITORY.replace(/^olono\//, '');
+
+// Get a description of the build status (lump "error" in with "failure").
 const ciStatus = state === 'success' ? 'passed' : 'failed';
 
+// Get the committer's slack info.
+const slackInfo = _.get(SLACK_IDS, githubUser);
+
+// If we found some, try to send a slack message.
 if (slackInfo) {
+    // If we have the user's app channel, use that, otherwise send to their slackbot.
     const slackChannel = slackInfo.channel || slackInfo.id;
+
+    // Pick an icon randomly.
     const icon_emoji = _.sample([':male_mage:', ':female_mage:']);
+
+    // Build the Slack message payload.
     const payload = {
         channel: slackChannel,
         text: `Build ${ciStatus}: ${repoName}`,
@@ -56,7 +65,7 @@ if (slackInfo) {
                     },
                     {
                         type: 'mrkdwn',
-                        text: `*Status:* ${ciStatus}`
+                        text: `*Status:* ${state}` // <-- this can be "success", "failure" or "error"
                     }
                 ]
             },
@@ -74,6 +83,8 @@ if (slackInfo) {
         username: 'CI Run Status',
         icon_emoji
     };
+
+    // Post the Slack message.
     request.post(
         {
             url: 'https://slack.com/api/chat.postMessage',
@@ -86,11 +97,11 @@ if (slackInfo) {
         (err, response, body) => {
             if (err) {
                 console.log('Got error from Slack API when trying to send message:', err);
-                process.exit(0);
+                process.exit(1);
             }
             if (!_.get(body, 'ok')) {
                 console.log('Got unexpected response from Slack API:', body);
-                process.exit(0);
+                process.exit(1);
             }
             console.log(`Sent message!`);
             process.exit(0);
