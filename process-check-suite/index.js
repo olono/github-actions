@@ -47,7 +47,7 @@ if (slackInfo) {
         text: `The <${targetUrl}|${ALLOWED_CONTEXTS[context]} build> of your branch *${branchName}* in the *${process.env.GITHUB_REPOSITORY}* repo was a ${state}.`,
         as_user: false,
         username: 'CI Run Status',
-        icon_emoji: state === 'success' ? ':white_check_mark' : ':x:'
+        icon_emoji: state === 'success' ? ':white_check_mark:' : ':x:'
     };
     console.log(`Bearer ${SLACK_TOKEN}`, payload);
     request.post(
