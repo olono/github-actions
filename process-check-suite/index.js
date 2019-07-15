@@ -16,37 +16,39 @@ if (!ALLOWED_CONTEXTS[context]) {
     process.exit(78);
 }
 
-const status = _.get(eventJson, 'status');
-if (status === 'pending') {
+const state = _.get(eventJson, 'state');
+if (state === 'pending') {
     process.exit(78);
 }
 
-if (status === 'success') {
+if (state === 'success') {
     console.log('SUCCESS!');
 }
 
-if (status === 'failure') {
+if (state === 'failure') {
     console.log('FAIL!');
 }
 
-if (status === 'error') {
+if (state === 'error') {
     console.log('ERROR!');
 }
 
-const githubUser = _.get(eventJson, 'committer.login');
+const githubUser = _.get(eventJson, 'commit.committer.login');
 const slackInfo = _.get(SLACK_IDS, githubUser);
 const branchName = _.get(eventJson, 'branches.0.name');
 const targetUrl = _.get(eventJson, 'target_url');
+
+console.log({ githubUser, slackInfo, branchName, targetUrl, state });
 
 if (slackInfo) {
     const slackChannel = slackInfo.channel || slackInfo.id;
     const payload = {
         channel: slackChannel,
-        text: `:${status === 'success' ? '+1' : '-1'}: The <${targetUrl}|${
+        text: `:${state === 'success' ? '+1' : '-1'}: The <${targetUrl}|${
             ALLOWED_CONTEXTS[context]
         } build> of your branch *${branchName}* in the *${
             process.env.GITHUB_REPOSITORY
-        }* repo was a ${status}.`,
+        }* repo was a ${state}.`,
         as_user: false,
         username: 'CI BOT!'
     };
