@@ -47,11 +47,7 @@ if (slackInfo) {
     const slackChannel = slackInfo.channel || slackInfo.id;
     const payload = {
         channel: slackChannel,
-        text: `:${state === 'success' ? '+1' : '-1'}: The <${targetUrl}|${
-            ALLOWED_CONTEXTS[context]
-        } build> of your branch *${branchName}* in the *${
-            process.env.GITHUB_REPOSITORY
-        }* repo was a ${state}.`,
+        text: `The <${targetUrl}|${ALLOWED_CONTEXTS[context]} build> of your branch *${branchName}* in the *${process.env.GITHUB_REPOSITORY}* repo was a ${state}.`,
         as_user: false,
         username: 'CI BOT!'
     };
@@ -63,6 +59,7 @@ if (slackInfo) {
                 Authorization: `Bearer ${SLACK_TOKEN}`,
                 'Content-type': 'application/json'
             },
+            icon_emoji: state === 'success' ? ':white_check_mark' : ':x:',
             json: payload
         },
         (err, response, body) => {
