@@ -49,7 +49,8 @@ if (slackInfo) {
         channel: slackChannel,
         text: `The <${targetUrl}|${ALLOWED_CONTEXTS[context]} build> of your branch *${branchName}* in the *${process.env.GITHUB_REPOSITORY}* repo was a ${state}.`,
         as_user: false,
-        username: 'CI BOT!'
+        username: 'CI Run Status',
+        icon_emoji: state === 'success' ? ':white_check_mark' : ':x:'
     };
     console.log(`Bearer ${SLACK_TOKEN}`, payload);
     request.post(
@@ -59,7 +60,6 @@ if (slackInfo) {
                 Authorization: `Bearer ${SLACK_TOKEN}`,
                 'Content-type': 'application/json'
             },
-            icon_emoji: state === 'success' ? ':white_check_mark' : ':x:',
             json: payload
         },
         (err, response, body) => {
