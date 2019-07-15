@@ -41,70 +41,93 @@ const repoName = process.env.GITHUB_REPOSITORY.replace(/^olono\//, '');
 const ciStatus = state === 'success' ? 'passed' : 'failed';
 
 // Get the committer's slack info.
-const slackInfo = _.get(SLACK_IDS, githubUser);
+const slackId = _.get(SLACK_IDS, githubUser);
 
 // If we found some, try to send a slack message.
-if (slackInfo) {
-    // If we have the user's app channel, use that, otherwise send to their slackbot.
-    const slackChannel = slackInfo.channel || slackInfo.id;
-
-    // Pick an icon randomly.
-    const icon_emoji = _.sample([':male_mage:', ':female_mage:']);
-
-    // Build the Slack message payload.
-    const payload = {
-        channel: slackChannel,
-        text: `Build ${ciStatus}: ${repoName}`,
-        blocks: [
-            {
-                type: 'context',
-                elements: [
-                    {
-                        type: 'mrkdwn',
-                        text: `*Repo:* ${repoName}`
-                    },
-                    {
-                        type: 'mrkdwn',
-                        text: `*Status:* ${state}` // <-- this can be "success", "failure" or "error"
-                    }
-                ]
-            },
-            {
-                type: 'section',
-                text: {
-                    type: 'mrkdwn',
-                    text: `${state === 'success' ? ':white_check_mark:' : ':x:'}  The <${targetUrl}|${
-                        ALLOWED_CONTEXTS[context]
-                    } build> of your branch *${branchName}* in the *${repoName}* repo was a ${state}.`
-                }
-            }
-        ],
-        as_user: false,
-        username: 'CI Run Status',
-        icon_emoji
-    };
-
-    // Post the Slack message.
+if (slackId) {
+    // Open an IM channel for the user.
     request.post(
         {
-            url: 'https://slack.com/api/chat.postMessage',
+            url: 'https://slack.com/api/im.open',
             headers: {
                 Authorization: `Bearer ${SLACK_TOKEN}`,
                 'Content-type': 'application/json'
             },
-            json: payload
+            json: {
+                user: slackId,
+                return_im: true
+            }
         },
         (err, response, body) => {
             if (err) {
-                console.log('Got error from Slack API when trying to send message:', err);
+                console.log('Got error from Slack API when trying to open IM channel:', err);
                 process.exit(1);
             }
             if (!_.get(body, 'ok')) {
                 console.log('Got unexpected response from Slack API:', body);
                 process.exit(1);
             }
-            console.log(`Sent message!`);
-            process.exit(0);
+            const channel = _.get(body, 'channel.id');
+
+            // Pick an icon randomly.
+            const icon_emoji = _.sample([':male_mage:', ':female_mage:']);
+
+            // Build the Slack message payload.
+            const payload = {
+                channel,
+                text: `Build ${ciStatus}: ${repoName}`,
+                blocks: [
+                    {
+                        type: 'context',
+                        elements: [
+                            {
+                                type: 'mrkdwn',
+                                text: `*Repo:* ${repoName}`
+                            },
+                            {
+                                type: 'mrkdwn',
+                                text: `*Status:* ${state}` // <-- this can be "success", "failure" or "error"
+                            }
+                        ]
+                    },
+                    {
+                        type: 'section',
+                        text: {
+                            type: 'mrkdwn',
+                            text: `${state === 'success' ? ':white_check_mark:' : ':x:'}  The <${targetUrl}|${
+                                ALLOWED_CONTEXTS[context]
+                            } build> of your branch *${branchName}* in the *${repoName}* repo was a ${state}.`
+                        }
+                    }
+                ],
+                as_user: false,
+                username: 'CI Run Status',
+                icon_emoji
+            };
+
+            // Post the Slack message.
+            request.post(
+                {
+                    url: 'https://slack.com/api/chat.postMessage',
+                    headers: {
+                        Authorization: `Bearer ${SLACK_TOKEN}`,
+                        'Content-type': 'application/json'
+                    },
+                    json: payload
+                },
+                (err, response, body) => {
+                    if (err) {
+                        console.log('Got error from Slack API when trying to send message:', err);
+                        process.exit(1);
+                    }
+                    if (!_.get(body, 'ok')) {
+                        console.log('Got unexpected response from Slack API:', body);
+                        process.exit(1);
+                    }
+                    console.log(`Sent message!`);
+                    process.exit(0);
+                }
+            );
         }
     );
 }
