@@ -8,12 +8,12 @@ action "Validate PR" {
   secrets = ["GITHUB_TOKEN"]
 }
 
-workflow "Check Suite" {
-  on = "check_suite"
-  resolves = ["Process check suite"]
+workflow "Status change" {
+  on = "status"
+  resolves = ["Process status change"]
 }
 
-action "Process check suite" {
-  uses = "./process-check-suite"
+action "Process status change" {
+  uses = "./process-status-change"
   secrets = ["SLACK_TOKEN"]
 }
