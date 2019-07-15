@@ -36,20 +36,44 @@ if (state === 'error') {
 const githubUser = _.get(eventJson, 'commit.committer.login');
 const slackInfo = _.get(SLACK_IDS, githubUser);
 const branchName = _.get(eventJson, 'branches.0.name');
+const repoName = process.env.GITHUB_REPOSITORY.replace(/^olono\//, '');
 const targetUrl = _.get(eventJson, 'target_url');
-
-console.log({ githubUser, slackInfo, branchName, targetUrl, state });
+const ciStatus = state === 'success' ? 'passed' : 'failed';
 
 if (slackInfo) {
     const slackChannel = slackInfo.channel || slackInfo.id;
+    const icon_emoji = _.sample([':male_mage:', ':female_mage:']);
     const payload = {
         channel: slackChannel,
-        text: `The <${targetUrl}|${ALLOWED_CONTEXTS[context]} build> of your branch *${branchName}* in the *${process.env.GITHUB_REPOSITORY}* repo was a ${state}.`,
+        text: `Build ${ciStatus}: ${repoName}`,
+        blocks: [
+            {
+                type: 'context',
+                elements: [
+                    {
+                        type: 'mrkdwn',
+                        text: `*Repo:* ${repoName}`
+                    },
+                    {
+                        type: 'mrkdwn',
+                        text: `*Status:* ${ciStatus}`
+                    }
+                ]
+            },
+            {
+                type: 'section',
+                text: {
+                    type: 'mrkdwn',
+                    text: `${state === 'success' ? ':white_check_mark:' : ':x:'}  The <${targetUrl}|${
+                        ALLOWED_CONTEXTS[context]
+                    } build> of your branch *${branchName}* in the *${repoName}* repo was a ${state}.`
+                }
+            }
+        ],
         as_user: false,
         username: 'CI Run Status',
-        icon_emoji: state === 'success' ? ':white_check_mark:' : ':x:'
+        icon_emoji
     };
-    console.log(`Bearer ${SLACK_TOKEN}`, payload);
     request.post(
         {
             url: 'https://slack.com/api/chat.postMessage',
@@ -73,5 +97,3 @@ if (slackInfo) {
         }
     );
 }
-
-console.dir({ env: process.env, json: eventJson }, { depth: null });
