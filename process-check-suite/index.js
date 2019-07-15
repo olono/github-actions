@@ -2,10 +2,7 @@ const _ = require('lodash');
 const request = require('request');
 
 const SLACK_IDS = require('./slack-ids');
-const SLACK_TOKEN = 'vhIR739SUdyCVCnxUE1bYh98-791675935396-7682552394-bxox'
-    .split('')
-    .reverse()
-    .join('');
+const SLACK_TOKEN = _.get(process.env, 'SLACK_TOKEN');
 
 const ALLOWED_CONTEXTS = {
     semaphoreci: 'Semaphore'
