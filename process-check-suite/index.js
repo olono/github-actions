@@ -2,7 +2,7 @@ const _ = require('lodash');
 const request = require('request');
 
 const SLACK_IDS = require('./slack-ids');
-const SLACK_TOKEN = 'xoxb-4932552867-693539576197-buemNUZ9Y22NyF8HmZ5HodbF';
+const SLACK_TOKEN = 'xoxb-4932552867-693539576197-VBzrHzyN3PnIQkkQfzzWP8HA';
 
 const ALLOWED_CONTEXTS = {
     semaphoreci: 'Semaphore'
@@ -52,11 +52,13 @@ if (slackInfo) {
         as_user: false,
         username: 'CI BOT!'
     };
+    console.log(`Bearer ${SLACK_TOKEN}`, payload);
     request.post(
         {
             url: 'https://slack.com/api/chat.postMessage',
             headers: {
-                Authorization: `Bearer ${SLACK_TOKEN}`
+                Authorization: `Bearer ${SLACK_TOKEN}`,
+                'Content-type': 'application/json'
             },
             json: payload
         },
