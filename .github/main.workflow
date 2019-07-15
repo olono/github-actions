@@ -15,5 +15,5 @@ workflow "Check Suite" {
 
 action "Process check suite" {
   uses = "./process-check-suite"
-  secrets = ["GITHUB_TOKEN"]
+  secrets = ["SLACK_TOKEN"]
 }
