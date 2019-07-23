@@ -15,5 +15,5 @@ workflow "Status change" {
 
 action "Process status change" {
   uses = "./process-status-change"
-  secrets = ["SLACK_TOKEN"]
+  secrets = ["SLACK_TOKEN", "SLACK_IDS_URL"]
 }
