@@ -149,7 +149,7 @@ async.autoInject(
         if (err) {
             if (err === 'NO_SLACK_ID') {
                 console.log(`No slack ID found for Github user ${githubUser}`);
-                process.exit(68);
+                process.exit(78);
             }
             console.log('An error occured: ', err);
             process.exit(1);
