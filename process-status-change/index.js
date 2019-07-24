@@ -154,5 +154,6 @@ async.autoInject(
             console.log('An error occured: ', err);
             process.exit(1);
         }
+        process.exit(0);
     }
 );
