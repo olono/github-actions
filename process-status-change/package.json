@@ -1,0 +1,17 @@
+{
+    "name": "process_status_change",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "async": "^3.1.0",
+        "lodash": "^4.17.11",
+        "request": "^2.88.0"
+    }
+}
