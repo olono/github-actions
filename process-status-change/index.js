@@ -17,7 +17,11 @@ const ALLOWED_CONTEXTS = {
 // Get the event data and context.
 const eventPath = process.env.GITHUB_EVENT_PATH;
 const eventJson = require(eventPath);
+console.log('<EVENT START>');
+console.dir(eventJson, { depth: null });
+console.log('<EVENT END>');
 const context = _.get(eventJson, 'context');
+process.exit(0);
 
 // Bail if this is not a context we care about.
 if (!ALLOWED_CONTEXTS[context]) {
