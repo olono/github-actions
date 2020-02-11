@@ -10,7 +10,7 @@ const _ = require('lodash');
 const pr = _.get(danger, 'github.pr');
 
 if (!_.startsWith(_.get(pr, 'title'), 'ISSUE-')) {
-    fail('PR title must start with a JIRA issue number "ISSUE-XXX"');
+    fail('It works!  But PR title must start with a JIRA issue number "ISSUE-XXX"');
 }
 
 if (pr) {
