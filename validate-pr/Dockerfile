@@ -1,10 +1,5 @@
 FROM node:10
 
-LABEL "com.github.actions.name"="Validate PR"
-LABEL "com.github.actions.description"="Run Danger PR validation"
-LABEL "com.github.actions.icon"="pencil"
-LABEL "com.github.actions.color"="purple"
-
 COPY . /_github-actions/validate-pr/
 
 ADD entrypoint.sh /entrypoint.sh

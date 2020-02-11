@@ -1,0 +1,12 @@
+name: Validate PR
+description: Run Danger PR validation
+branding:
+  icon: zap
+  color: purple
+runs:
+  using: docker
+  image: Dockerfile
+  env: 
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+

@@ -19,9 +19,9 @@ if (pr) {
         url: 'https://nexdio.atlassian.net/browse',
         location: 'title',
         format: (emoji, jiraUrls) => {
-            return _.size(jiraUrls) === 1 ? 
-                `${emoji} JIRA ticket: ${jiraUrls[0]}` :
-                `${emoji} JIRA tickets:<br>- ${jiraUrls.join('<br>- ')}`;
+            return _.size(jiraUrls) === 1
+                ? `${emoji} JIRA ticket: ${jiraUrls[0]}`
+                : `${emoji} JIRA tickets:<br>- ${jiraUrls.join('<br>- ')}`;
         }
     });
 }
