@@ -10,13 +10,13 @@ const _ = require('lodash');
 const pr = _.get(danger, 'github.pr');
 
 if (!_.startsWith(_.get(pr, 'title'), 'ISSUE-')) {
-    fail('It works!  But PR title must start with a JIRA issue number "ISSUE-XXX"');
+    fail('PR Validation Failed :disappointed:');
 }
 
 if (pr) {
     jiraIssue({
         key: 'ISSUE',
-        url: 'https://nexdio.atlassian.net/browse',
+        url: 'https://insightsquared.atlassian.net/browse',
         location: 'title',
         format: (emoji, jiraUrls) => {
             return _.size(jiraUrls) === 1
