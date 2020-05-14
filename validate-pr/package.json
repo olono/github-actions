@@ -10,7 +10,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "danger": "^7.1.4",
+        "danger": "^10.2.0",
         "danger-plugin-jira-issue": "^1.4.1",
         "lodash": "^4.17.11"
     },
