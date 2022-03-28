@@ -9,14 +9,14 @@ const _ = require('lodash');
 
 const pr = _.get(danger, 'github.pr');
 
-if (!_.startsWith(_.get(pr, 'title'), 'ISSUE-')) {
+if (!_.startsWith(_.get(pr, 'title'), 'INSIGHT-')) {
     fail('PR Validation Failed :disappointed:');
 }
 
 if (pr) {
     jiraIssue({
-        key: 'ISSUE',
-        url: 'https://insightsquared.atlassian.net/browse',
+        key: 'INSIGHT',
+        url: 'https://mediafly.atlassian.net/browse',
         location: 'title',
         format: (emoji, jiraUrls) => {
             return _.size(jiraUrls) === 1
