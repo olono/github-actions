@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 const pr = _.get(danger, 'github.pr');
 
-if (!_.startsWith(_.get(pr, 'title'), 'INSIGHT-')) {
+if (!_.startsWith(_.trim(_.get(pr, 'title')), 'INSIGHT-')) {
     fail('PR Validation Failed :disappointed:');
 }
 
